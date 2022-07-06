@@ -6,19 +6,15 @@ const taskInput = document.querySelector('.task-input input'),
 let editId;
 let isEditedTask = false;
 let todos = JSON.parse(localStorage.getItem("todo-list"));
-
-let currentFilter = "all";                                                      //pending and completed fitter
-// console.log(currentFilter);                                                     
+let currentFilter = "all";
 
 filters.forEach(btn => {
     btn.addEventListener("click", () => {
-        // console.log(btn);
         document.querySelector('span.active').classList.remove("active");
         btn.classList.add("active");
         showTodo(btn.id);
-        currentFilter = btn.id;                                                 //pending and completed fitter
+        currentFilter = btn.id;
         countItem();
-        // console.log(btn.id);
     });
 });
 
@@ -26,9 +22,7 @@ function showTodo(filter) {
     let li = "";
     if (todos) {
         todos.forEach((todo, id) => {
-            // console.log(todo);
             let isCompleted = todo.status === "completed" ? "checked" : " ";
-            // console.log("completed", isCompleted);
             if (filter == todo.status || filter == "all") {
                 li += ` <li class="task">
     <label for="${id}">
@@ -51,9 +45,7 @@ function showTodo(filter) {
 showTodo(currentFilter);
 countItem();
 
-
 function showMenu(selectedTask) {
-    // console.log(selectedTask);
     let taskMenu = selectedTask.parentElement.lastElementChild;
     taskMenu.classList.add("show");
     document.addEventListener('click', e => {
@@ -64,14 +56,12 @@ function showMenu(selectedTask) {
 }
 
 function editTask(taskId, taskName) {
-    // console.log(taskId, taskName);
     editId = taskId;
     isEditedTask = true;
     taskInput.value = taskName;
 }
 
 function deleteTask(deleteId) {
-    // console.log(deleteId);
     todos.splice(deleteId, 1);
     localStorage.setItem("todo-list", JSON.stringify(todos));
     showTodo(currentFilter);
@@ -79,32 +69,26 @@ function deleteTask(deleteId) {
 }
 
 const clearButton = () => {
-    // console.log("clearBtn");
     var newArray = [...todos];
     var newItem = newArray.filter((element => element.status !== "completed"));
     todos = [...newItem];
-    //  console.log(newItem);
     localStorage.setItem("todo-list", JSON.stringify(todos));
     showTodo(currentFilter);
 }
 
 function updateStatus(selectedTask) {
-    // console.log(selectedTask);
     let taskName = selectedTask.parentElement.lastElementChild;
-    // console.log(selectedTask.checked);
     if (selectedTask.checked) {
         taskName.classList.add("checked");
         todos[selectedTask.id].status = "completed";
-        // alert("Are you sure?")
     } else {
         taskName.classList.remove("checked");
         todos[selectedTask.id].status = "pending";
     }
     localStorage.setItem("todo-list", JSON.stringify(todos))
-    showTodo(currentFilter);                                                                 //pending and completed fitter
+    showTodo(currentFilter);
     countItem();
 }
-
 
 taskInput.addEventListener("keyup", e => {
     let userTask = taskInput.value;
@@ -124,17 +108,14 @@ taskInput.addEventListener("keyup", e => {
         showTodo(currentFilter);
         countItem();
     }
-    // console.log(todos);
-});
 
+});
 
 function countItem() {
     var newActiveArr = [...todos];
     var newItems = newActiveArr.filter((element => element.status === "pending"));
     newActiveArr = [...newItems];
-    // console.log(newItems);
     let uncheckedCount = newActiveArr.length
     uncheckedCountSpan.innerHTML = uncheckedCount
     uncheckedCount = newItems;
-
 }
